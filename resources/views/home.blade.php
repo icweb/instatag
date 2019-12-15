@@ -17,7 +17,7 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <textarea name="results" id="results" cols="30" rows="50" class="form-control" readonly></textarea>
+                    <textarea name="results" id="results" cols="30" rows="50" class="form-control"></textarea>
                 </div>
             </div>
         </div>
