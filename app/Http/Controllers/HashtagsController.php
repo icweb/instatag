@@ -17,7 +17,7 @@ class HashtagsController extends Controller
      */
     public function index()
     {
-        $hashtags = Hashtag::with('group')->orderBy('hashtag')->get();
+        $hashtags = auth()->user()->hashtags()->with('group')->orderBy('hashtag')->get();
 
         return view('hashtags.index', compact('hashtags'));
     }
@@ -27,11 +27,9 @@ class HashtagsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($group)
     {
-        $groups = Group::orderBy('title')->get();
-
-        return view('hashtags.create', compact('groups'));
+        return view('hashtags.create', compact('group'));
     }
 
     /**
@@ -44,11 +42,13 @@ class HashtagsController extends Controller
     {
         $group = Group::findOrFail($request->group);
 
-        $hashtag = $group->hashtags()->create([
-            'hashtag' => $request->hashtag
+        $group->hashtags()->create([
+            'hashtag' => $request->hashtag,
+            'priority' => $request->priority,
+            'user_id' => auth()->id()
         ]);
 
-        return redirect()->route('hashtags.show', compact('hashtag'));
+        return redirect()->route('groups.show', ['group' => $group]);
     }
 
     /**
@@ -72,11 +72,9 @@ class HashtagsController extends Controller
      */
     public function edit(Hashtag $hashtag)
     {
-        $groups = Group::orderBy('title')->get();
-
         $hashtag->load('group');
 
-        return view('hashtags.edit', compact('groups', 'hashtag'));
+        return view('hashtags.edit', compact( 'hashtag'));
     }
 
     /**
@@ -89,11 +87,13 @@ class HashtagsController extends Controller
     public function update(UpdatesHashtags $request, Hashtag $hashtag)
     {
         $hashtag->update([
-            'group_id' => $request->group,
+            'user_id' => auth()->id(),
+            'group_id' => $hashtag->group_id,
+            'priority' => $request->priority,
             'hashtag' => $request->hashtag
         ]);
 
-        return redirect()->back()->with('success', 'Hashtag has been updated successfully');
+        return redirect()->route('groups.show', ['group' => $hashtag->group])->with('success', 'Hashtag has been updated successfully');
     }
 
     /**
@@ -112,6 +112,6 @@ class HashtagsController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
 
-        return redirect()->route('hashtags.index');
+        return redirect()->route('groups.show', ['group' => $hashtag->group]);
     }
 }

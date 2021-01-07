@@ -15,11 +15,13 @@ class CreateHashtagsTable extends Migration
     {
         Schema::create('hashtags', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('group_id');
+            $table->unsignedBigInteger('priority')->default(0);
             $table->string('hashtag');
             $table->timestamps();
             $table->softDeletes();
-
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('group_id')->references('id')->on('groups');
         });
     }

@@ -25,8 +25,9 @@ class CreatesHashtags extends FormRequest
     public function rules()
     {
         return [
-            'group' => 'required|integer|max:11|in:' . implode(',', Group::select('id')->get()->pluck()->toArray()),
-            'hashtag' => 'required|string|max:255'
+            'priority' => 'required|integer|max:11|min:0',
+            'group' => 'required|integer|max:11',
+            'hashtag' => 'required|string|max:255|alpha_num'
         ];
     }
 }

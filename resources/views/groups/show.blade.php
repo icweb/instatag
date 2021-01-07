@@ -8,6 +8,9 @@
                 <div class="card-header">
                     <a href="{{ route('groups.index') }}">Groups</a> > {{ $group->title }}
                     <div class="float-right">
+                        <a href="{{ route('hashtags.create', ['group' => $group]) }}" class="btn btn-success btn-sm">
+                            <i class="fad fa-plus"></i> Add
+                        </a>
                         <a href="{{ route('groups.edit', $group) }}" class="btn btn-warning btn-sm">
                             <i class="fad fa-edit"></i> Edit
                         </a>
@@ -25,7 +28,7 @@
                             <tr>
                                 <td><i class="far fa-hashtag"></i> {{ $hashtag->hashtag }}</td>
                                 <td class="text-right">
-                                    <a href="{{ route('hashtags.edit', $hashtag) }}">Edit</a>
+                                    <a href="{{ route('hashtags.edit', ['hashtag' => $hashtag]) }}">Edit</a>
                                 </td>
                             </tr>
                         @endforeach

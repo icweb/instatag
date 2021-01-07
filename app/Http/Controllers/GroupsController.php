@@ -15,7 +15,7 @@ class GroupsController extends Controller
      */
     public function index()
     {
-        $groups = Group::orderBy('title')->get();
+        $groups = auth()->user()->groups()->orderBy('title')->get();
 
         return view('groups.index', compact('groups'));
     }
@@ -39,7 +39,8 @@ class GroupsController extends Controller
     public function store(CreatesGroups $request)
     {
         $group = Group::create([
-            'title' => $request->title
+            'title' => $request->title,
+            'user_id' => auth()->id()
         ]);
 
         return redirect()->route('groups.show', $group);
@@ -94,6 +95,10 @@ class GroupsController extends Controller
     public function destroy(Group $group)
     {
         try{
+            foreach($group->hashtags as $hashtag)
+            {
+                $hashtag->delete();
+            }
             $group->delete();
         }
         catch (\Exception $e)

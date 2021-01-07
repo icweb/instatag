@@ -5,20 +5,27 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Group extends Model
+class Hashtag extends Model
 {
     use SoftDeletes;
 
     public $fillable = [
-        'title'
+        'user_id',
+        'group_id',
+        'hashtag',
     ];
 
     protected $casts = [
         'deleted_at' => 'datetime'
     ];
 
-    public function hashtags()
+    public function group()
     {
-        return $this->hasMany(Hashtag::class);
+        return $this->belongsTo(Group::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

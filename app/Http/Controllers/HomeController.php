@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $groups = Group::with('hashtags')->orderBy('title')->get();
+        $groups = auth()->user()->groups()->with('hashtags')->orderBy('title')->get();
 
         return view('home', compact('groups'));
     }

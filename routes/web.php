@@ -25,6 +25,11 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('groups', 'GroupsController');
-    Route::resource('hashtags', 'HashtagsController');
+    Route::resource('hashtags', 'HashtagsController')->except(['create']);
+    Route::get('hashtags/create/{group}', 'HashtagsController@create')->name('hashtags.create');
 
 });
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
