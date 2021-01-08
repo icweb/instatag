@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Group;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreatesHashtags extends FormRequest
@@ -25,8 +24,8 @@ class CreatesHashtags extends FormRequest
     public function rules()
     {
         return [
-            'priority' => 'required|integer|max:11|min:0',
-            'group' => 'required|integer|max:11',
+            'priority' => 'required|integer',
+            'group' => 'required|integer',
             'hashtag' => 'required|string|max:255|alpha_num'
         ];
     }

@@ -2,30 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Group;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         $groups = auth()->user()->groups()->with('hashtags')->orderBy('title')->get();
 
-        return view('home', compact('groups'));
+        return view('dashboard', compact('groups'));
     }
 }

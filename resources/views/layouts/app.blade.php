@@ -24,14 +24,40 @@
         <div class="min-h-screen bg-gray-100">
             @livewire('navigation-menu')
 
-            <!-- Page Heading -->
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
+            @if(!empty(session()->get('error')))
+                <div class="text-white px-6 py-4 border-0 relative mb-4 bg-red-500">
+                    <span class="text-xl inline-block mr-5 align-middle">
+                        <i class="fas fa-bell" />
+                    </span>
+                    <span class="inline-block align-middle mr-8">
+                        <b class="capitalize">Danger!</b> {{ session()->get('error') }}
+                    </span>
                 </div>
-            </header>
+            @endif
+            @if($errors->any())
+                <div class="text-white px-6 py-4 border-0 relative mb-4 bg-red-500">
+                    <span class="text-xl inline-block mr-5 align-middle">
+                        <i class="fas fa-bell" />
+                    </span>
+                    <span class="inline-block align-middle mr-8">
+                        <b class="capitalize">Danger!</b>  {{ implode('', $errors->all(':message')) }}
+                    </span>
+                </div>
+            @endif
+            @if(!empty(session()->get('success')))
+                <div class="alert alert-success">
+                    <div class="text-white px-6 py-4 border-0 relative mb-4 bg-green-500">
+                        <span class="text-xl inline-block mr-5 align-middle">
+                            <i class="fas fa-bell" />
+                        </span>
+                        <span class="inline-block align-middle mr-8">
+                            <b class="capitalize">Success!</b>  {{ session()->get('success') }}
+                        </span>
+                    </div>
+                </div>
+            @endif
 
-            <!-- Page Content -->
+        <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>

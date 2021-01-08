@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,18 +17,20 @@ Route::get('/', function () {
     return redirect()->route('home');
 });
 
-Auth::routes([
-    'register' => false,
-    'reset' => false,
-    'verify' => false,
-]);
+//Auth::routes([
+//    'register' => false,
+//    'reset' => false,
+//    'verify' => false,
+//]);
 
 Route::group(['middleware' => ['auth']], function(){
 
-    Route::get('/home', 'HomeController@index')->name('home');
-    Route::resource('groups', 'GroupsController');
-    Route::resource('hashtags', 'HashtagsController')->except(['create']);
-    Route::get('hashtags/create/{group}', 'HashtagsController@create')->name('hashtags.create');
+    Route::get('/home', '\App\Http\Controllers\HomeController@index')->name('home');
+
+    Route::resource('groups', '\App\Http\Controllers\GroupsController');
+
+    Route::resource('hashtags', '\App\Http\Controllers\HashtagsController')->except(['create']);
+    Route::get('hashtags/create/{group}', '\App\Http\Controllers\HashtagsController@create')->name('hashtags.create');
 
 });
 

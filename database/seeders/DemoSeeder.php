@@ -13,6 +13,18 @@ class DemoSeeder extends Seeder
      */
     public function run()
     {
+        \App\Models\User::create([
+            'name' => 'Ian',
+            'email' => 'iaay@protonmail.com',
+            'password' => bcrypt('tagsRus'),
+        ]);
+
+        \App\Models\User::create([
+            'name' => 'John',
+            'email' => 'john@email.com',
+            'password' => bcrypt('tagsRus'),
+        ]);
+
         $data = [
             [
                 'title' => 'General',
@@ -187,8 +199,8 @@ class DemoSeeder extends Seeder
 
         foreach($data as $item)
         {
-            $group1 = \App\Group::create(['title' => $item['title'], 'user_id' => 1]);
-            $group2 = \App\Group::create(['title' => $item['title'], 'user_id' => 2]);
+            $group1 = \App\Models\Group::create(['title' => $item['title'], 'user_id' => 1]);
+            $group2 = \App\Models\Group::create(['title' => $item['title'], 'user_id' => 2]);
 
             foreach($item['hashtags']  as $tag)
             {

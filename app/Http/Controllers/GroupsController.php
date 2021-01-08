@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Group;
 use App\Http\Requests\CreatesGroups;
 use App\Http\Requests\UpdatesGroups;
+use App\Models\Group;
+use Illuminate\Http\Request;
 
 class GroupsController extends Controller
 {
@@ -38,18 +39,17 @@ class GroupsController extends Controller
      */
     public function store(CreatesGroups $request)
     {
-        $group = Group::create([
-            'title' => $request->title,
-            'user_id' => auth()->id()
+        $group = auth()->user()->groups()->create([
+            'title' => $request->title
         ]);
 
-        return redirect()->route('groups.show', $group);
+        return redirect()->route('groups.show', $group)->with('success', 'Group has been created successfully');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Group  $group
+     * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
     public function show(Group $group)
@@ -62,7 +62,7 @@ class GroupsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Group  $group
+     * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
     public function edit(Group $group)
@@ -74,7 +74,7 @@ class GroupsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  UpdatesGroups  $request
-     * @param  \App\Group  $group
+     * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatesGroups $request, Group $group)
@@ -83,13 +83,13 @@ class GroupsController extends Controller
             'title' => $request->title
         ]);
 
-        return redirect()->back()->with('success', 'Group has been updated successfully');
+        return redirect()->route('groups.show', ['group' => $group])->with('success', 'Group has been updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Group  $group
+     * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
     public function destroy(Group $group)
@@ -106,6 +106,6 @@ class GroupsController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
 
-        return redirect()->route('groups.index');
+        return redirect()->route('groups.index')->with('success', 'Group has been deleted successfully');
     }
 }

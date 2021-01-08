@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Group;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatesHashtags extends FormRequest
@@ -25,7 +24,7 @@ class UpdatesHashtags extends FormRequest
     public function rules()
     {
         return [
-            'priority' => 'required|integer|max:11|min:0',
+            'priority' => 'required|integer',
             'hashtag' => 'required|string|max:255|alpha_num'
         ];
     }

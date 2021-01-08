@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Group;
-use App\Hashtag;
 use App\Http\Requests\CreatesHashtags;
 use App\Http\Requests\UpdatesHashtags;
+use App\Models\Group;
+use App\Models\Hashtag;
 use Illuminate\Http\Request;
 
 class HashtagsController extends Controller
@@ -17,17 +17,16 @@ class HashtagsController extends Controller
      */
     public function index()
     {
-        $hashtags = auth()->user()->hashtags()->with('group')->orderBy('hashtag')->get();
-
-        return view('hashtags.index', compact('hashtags'));
+        abort(404);
     }
 
     /**
      * Show the form for creating a new resource.
      *
+     * @param Group $group
      * @return \Illuminate\Http\Response
      */
-    public function create($group)
+    public function create(Group $group)
     {
         return view('hashtags.create', compact('group'));
     }
@@ -48,26 +47,24 @@ class HashtagsController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        return redirect()->route('groups.show', ['group' => $group]);
+        return redirect()->route('groups.show', ['group' => $group])->with('success', 'Hashtag has been created successfully');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Hashtag  $hashtag
+     * @param  \App\Models\Hashtag  $hashtag
      * @return \Illuminate\Http\Response
      */
     public function show(Hashtag $hashtag)
     {
-        $hashtag->load('group');
-
-        return view('hashtags.show', compact('hashtag'));
+        abort(404);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Hashtag  $hashtag
+     * @param  \App\Models\Hashtag  $hashtag
      * @return \Illuminate\Http\Response
      */
     public function edit(Hashtag $hashtag)
@@ -81,7 +78,7 @@ class HashtagsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  UpdatesHashtags  $request
-     * @param  \App\Hashtag  $hashtag
+     * @param  \App\Models\Hashtag  $hashtag
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatesHashtags $request, Hashtag $hashtag)
@@ -99,7 +96,7 @@ class HashtagsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Hashtag  $hashtag
+     * @param  \App\Models\Hashtag  $hashtag
      * @return \Illuminate\Http\Response
      */
     public function destroy(Hashtag $hashtag)
@@ -112,6 +109,6 @@ class HashtagsController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
 
-        return redirect()->route('groups.show', ['group' => $hashtag->group]);
+        return redirect()->route('groups.show', ['group' => $hashtag->group])->with('success', 'Hashtag has been deleted successfully');
     }
 }
